@@ -36,7 +36,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: Color(0xFF121212),
+      backgroundColor: Color(0xFF091227),
       body: Center(
         child: Image(
           image: AssetImage('assets/vybe_logo.png'),
