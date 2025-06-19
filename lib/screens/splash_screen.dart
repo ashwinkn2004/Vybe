@@ -1,16 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vybe/providers/auth_provider.dart';
+import 'package:vybe/screens/registration_screen.dart';
+import 'package:vybe/screens/signup_screen.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  ConsumerState<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    _checkAuthStatus();
+  }
+
+  Future<void> _checkAuthStatus() async {
+    final authService = ref.read(authServiceProvider);
+    final isLoggedIn = await authService.isLoggedIn();
+
+    await Future.delayed(const Duration(seconds: 2)); // Splash delay
+
+    if (!mounted) return;
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (_) => isLoggedIn ? const RegisterScreen() : const SignUpScreen(),
+      ),
+    );
   }
 
   @override
@@ -19,9 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: Color(0xFF121212),
       body: Center(
         child: Image(
-          image: AssetImage(
-            'assets/vybe_logo.png',
-          ), 
+          image: AssetImage('assets/vybe_logo.png'),
           width: 200,
         ),
       ),

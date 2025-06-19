@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vybe/providers/auth_provider.dart';
+import 'package:vybe/screens/registration_screen.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
@@ -68,7 +70,10 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   Widget _signUpButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        // Sign up logic
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const RegisterScreen()),
+        );
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color(0xFF8DCBEC),
@@ -90,8 +95,22 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   // ✅ Google Button
   Widget _googleButton(BuildContext context) {
     return ElevatedButton.icon(
-      onPressed: () {
-        // Google sign-in logic
+      onPressed: () async {
+        final auth = ref.read(authServiceProvider);
+
+        try {
+          final result = await auth.signInWithGoogle();
+          if (result != null) {
+            // Navigate to home or success screen
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Google Sign-in successful')),
+            );
+          }
+        } catch (e) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('Google Sign-in failed: $e')));
+        }
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color(0xFF091227),
