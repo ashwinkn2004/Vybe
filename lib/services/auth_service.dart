@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive/hive.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -26,7 +27,9 @@ class AuthService {
   }
 
   // 📧 Register using Email & Password
+
   Future<UserCredential?> signUpWithEmailPassword({
+    String? username,
     required String email,
     required String password,
   }) async {
@@ -34,20 +37,38 @@ class AuthService {
       email: email,
       password: password,
     );
+
+    final uid = credential.user?.uid;
     final token = await credential.user?.getIdToken();
+
     if (token != null) {
       await saveToken(token);
     }
+
+    if (uid != null) {
+      final userDetailsRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .collection('profile')
+          .doc('userDetails');
+
+      await userDetailsRef.set({
+        'username': username,
+        'email': email,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+    }
+
     return credential;
   }
 
   // 🔐 Google Sign-in
   Future<UserCredential?> signInWithGoogle() async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
     if (googleUser == null) return null;
 
-    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
 
     final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
@@ -61,6 +82,39 @@ class AuthService {
       await saveToken(token);
     }
 
+    final user = userCredential.user;
+    if (user != null) {
+      final displayName = user.displayName ?? ''; // ✅ From Gmail name
+
+      final userDocRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('profile')
+          .doc('userDetails');
+
+      await userDocRef.set({
+        'username': displayName,
+        'email': user.email ?? '',
+        'uid': user.uid,
+        'createdAt': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+    }
+
     return userCredential;
+  }
+
+  Future<UserCredential?> signInWithEmailPassword({
+    required String email,
+    required String password,
+  }) async {
+    final credential = await _auth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    final token = await credential.user?.getIdToken();
+    if (token != null) {
+      await saveToken(token);
+    }
+    return credential;
   }
 }
