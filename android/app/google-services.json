@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "535646726443",
+    "project_id": "vybe-83614",
+    "storage_bucket": "vybe-83614.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:535646726443:android:04275ca0ea3dfc1b957d6e",
+        "android_client_info": {
+          "package_name": "com.example.vybe"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaAJfomnsOLi0HyM6EHcADLsOu2XkgfCI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

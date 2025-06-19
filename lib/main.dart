@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vybe/screens/registration_screen.dart';
 import 'package:vybe/screens/signup_screen.dart';
 import 'package:vybe/screens/splash_screen.dart';
 
@@ -16,7 +17,7 @@ class VybeApp extends StatelessWidget {
       title: 'Vybe',
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
-      home: const SignUpScreen(),
+      home: const RegisterScreen(),
     );
   }
 }
