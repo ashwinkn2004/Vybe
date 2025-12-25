@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vybe/providers/auth_provider.dart';
-import 'package:vybe/screens/registration_screen.dart';
+import 'package:vybe/screens/home_screen.dart';
 import 'package:vybe/screens/signup_screen.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
@@ -28,7 +28,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (_) => isLoggedIn ? const RegisterScreen() : const SignUpScreen(),
+        builder: (_) => isLoggedIn ? const HomeScreen() : const SignUpScreen(),
       ),
     );
   }
@@ -36,7 +36,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: Color(0xFF121212),
+      backgroundColor: Color(0xFF091227),
       body: Center(
         child: Image(
           image: AssetImage('assets/vybe_logo.png'),

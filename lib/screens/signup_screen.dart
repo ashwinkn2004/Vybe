@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vybe/providers/auth_provider.dart';
+import 'package:vybe/screens/home_screen.dart';
+import 'package:vybe/screens/login_screen.dart';
 import 'package:vybe/screens/registration_screen.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
@@ -16,27 +18,34 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFF091227),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              const Spacer(flex: 2),
-              Image.asset('assets/vybe_logo.png', width: 200),
-              const SizedBox(height: 20),
-              Text("Feel the Vybe", style: _headingTextStyle()),
-              const SizedBox(height: 8),
-              Text(
-                "Catch the rythm, live the moment.",
-                style: _subheadingTextStyle(),
-              ),
-              const Spacer(flex: 3),
-              _signUpButton(context),
-              const SizedBox(height: 12),
-              _googleButton(context),
-              const Spacer(flex: 2),
-              _bottomLoginText(),
-              const SizedBox(height: 20),
-            ],
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Spacer(flex: 8), // Push everything down
+                Image.asset('assets/vybe_logo.png', width: 200),
+                const SizedBox(height: 10),
+                Text("Feel the Vybe.", style: _headingTextStyle()),
+                const SizedBox(height: 8),
+                Text(
+                  "Catch the rhythm, live the moment.",
+                  style: _subheadingTextStyle(),
+                ),
+          
+                const SizedBox(height: 50),
+                _signUpButton(context),
+                const SizedBox(height: 12),
+                _googleButton(context),
+          
+                const Spacer(flex: 2), // Fills extra space below
+          
+                _bottomLoginText(),
+          
+                const SizedBox(height: 20), // Bottom padding
+              ],
+            ),
           ),
         ),
       ),
@@ -57,6 +66,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     return const TextStyle(
       color: Color(0xFFEAF0FF),
       fontSize: 22,
+      fontWeight: FontWeight.bold,
       fontFamily: "Poppins",
     );
   }
@@ -77,11 +87,11 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color(0xFF8DCBEC),
-        minimumSize: Size(MediaQuery.of(context).size.width * 0.9, 50),
+        minimumSize: Size(MediaQuery.of(context).size.width * 0.8, 40),
         shape: _roundedShape(),
       ),
       child: const Text(
-        'Sign Up',
+        'Sign up free',
         style: TextStyle(
           fontFamily: 'Poppins',
           fontSize: 18,
@@ -101,9 +111,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
         try {
           final result = await auth.signInWithGoogle();
           if (result != null) {
-            // Navigate to home or success screen
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Google Sign-in successful')),
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const HomeScreen()),
             );
           }
         } catch (e) {
@@ -114,7 +124,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color(0xFF091227),
-        minimumSize: Size(MediaQuery.of(context).size.width * 0.9, 50),
+        minimumSize: Size(MediaQuery.of(context).size.width * 0.8, 40),
         shape: _roundedShape(),
         side: const BorderSide(color: Colors.white),
         elevation: 0,
@@ -146,7 +156,10 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
         ),
         TextButton(
           onPressed: () {
-            // Navigate to login screen
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const LoginScreen()),
+            );
           },
           child: const Text(
             "Login",

@@ -10,6 +10,7 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await Hive.initFlutter();
   await Hive.openBox('auth');
+  
   runApp(const ProviderScope(child: VybeApp()));
 }
 
@@ -21,7 +22,10 @@ class VybeApp extends StatelessWidget {
     return MaterialApp(
       title: 'Vybe',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(),
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: const Color(0xFF091227),
+      ),
       home: const SplashScreen(),
     );
   }
