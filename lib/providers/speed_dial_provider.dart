@@ -1,8 +1,11 @@
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../controllers/speed_dial_controller.dart';
+import 'package:vybe/services/jiosaavn_service.dart';
 import '../models/song_model.dart';
 
+
 final speedDialProvider = FutureProvider<List<SongModel>>((ref) async {
-  final controller = SpeedDialController();
-  return await controller.getSpeedDialSongs();
+  final jioSaavnService = ref.read(jioSaavnServiceProvider);
+  // Fetch trending/top hits from JioSaavn
+  return await jioSaavnService.getTrendingSongs();
 });
